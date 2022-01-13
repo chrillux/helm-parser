@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Helm Parser</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+  <!-- Load wasm_exec.js -->
+  <script src="js/wasm_exec.js"></script>
+
+  <!-- Load template.js -->
+  <script src="js/template.js"></script>
+
+  <!-- Add a default chart after the page loads -->
+  <script async defer>
+    window.onload = function () {
+      defaultTextAreas()
+    }
+  </script>
+
+  <script>
+    if (!WebAssembly.instantiateStreaming) {
+      // polyfill
+      WebAssembly.instantiateStreaming = async (resp, importObject) => {
+        const source = await (await resp).arrayBuffer();
+        return await WebAssembly.instantiate(source, importObject);
+      };
+    }
+
+    const go = new Go();
+    let mod, inst;
+    WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(
+      async result => {
+        mod = result.module;
+        inst = result.instance;
+        await go.run(inst);
+      }
+    );
+  </script>
+
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="https://github.com/chrillux/helm-parser">
+        <img src="images/helm.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        Helm Parser
+      </a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Template</h2>
+            <textarea id="templates"></textarea>
+          </div>
+          <div class="col-md-12">
+            <h2>Values</h2>
+            <textarea id="values"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <h2>Result</h2>
+        <textarea id="result" disabled></textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <input type="button" class="btn btn-primary" onClick="renderNew('templates', 'values', 'result');"
+          id="renderButton" value="Render" />
+        <input type="button" class="btn btn-danger" onClick="clearTextAreas()" id="clearButton" value="Clear" />
+        <input type="button" class="btn btn-danger" onClick="defaultTextAreas()" id="defaultButton" value="Default" />
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

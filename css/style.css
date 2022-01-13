@@ -1,0 +1,29 @@
+#templates,
+#metadata,
+#values {
+    width: 100%;
+    min-height: 300px;
+    resize: vertical;
+    font-family: "Courier New", Courier, monospace;
+    border: 1px solid #ccc;
+}
+
+#result {
+    width: 100%;
+    min-height: 640px;
+    resize: vertical;
+    font-family: "Courier New", Courier, monospace;
+    border: 1px solid #ccc;
+}
+
+#result {
+    background: #eee;
+}
+
+span.whitespace {
+    color: #ccc;
+}
+
+label {
+    font-weight: normal;
+}
