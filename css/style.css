@@ -1,5 +1,4 @@
 #templates,
-#metadata,
 #values {
     width: 100%;
     min-height: 300px;
@@ -20,10 +19,7 @@
     background: #eee;
 }
 
-span.whitespace {
-    color: #ccc;
-}
-
-label {
-    font-weight: normal;
-}
+textarea:disabled, textarea:disabled::placeholder {
+    -webkit-text-fill-color: #000000;
+    opacity: 1; /* iOS opacity */
+  }
